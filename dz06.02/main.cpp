@@ -1,17 +1,24 @@
+#include <Windows.h>
+#include <iostream>
 #include "etelse.h"
 
+//Завдання №2
 int main() {
     try {
-        int x, y;
-        x = input<int>("Enter x");
-        y = input<int>("Enter y");
-        cout << "Result: " << sum(x, y) << endl;
+        Stack stack(10);
+
+        stack.push('a');
+        stack.push('b');
+        stack.push('c');
+
+        for (int i = stack.size() - 1; i >= 0; i--) {
+            char symbol = stack.pop();
+            std::cout << symbol << std::endl;
+        }
     }
-    catch (exception& err) {
-        cout << err.what() << endl;
+    catch (const std::exception& e) {
+        std::cerr << "Exception caught: " << e.what() << std::endl;
     }
-    catch (...) {
-        cout << "Unknown error" << endl;
-    }
+
     return 0;
 }

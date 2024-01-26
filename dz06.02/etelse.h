@@ -1,42 +1,58 @@
-#include <iostream>
-#include <stdexcept>
-#include <limits>
-
-using namespace std;
-
-int sum(int x, int y) {
-    if (y == 0) {
-        throw exception("Division by zero exception!");
+class Stack {
+public:
+    Stack(int capacity) {
+        this->capacity = capacity;
+        data = new char[capacity];
+        top = data;
     }
-    return x + y;
-}
 
-template <typename T>
-T inner_input() {
-    T value;
-    cin >> value;
-    if (cin.fail()) {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        throw exception("Input error!");
+    ~Stack() {
+        delete[] data;
     }
-    return value;
-}
 
-template <typename T>
-T input(string text) {
-    bool is_valid_input = true;
-    do {
-        cout << text << ": ";
-        try {
-            is_valid_input = true;
-            T x = inner_input<T>();
-            return x;
+    void push(char symbol) {
+        if (top == data + capacity) {
+            throw std::runtime_error("Stack overflow");
         }
-        catch (exception& err) {
-            cout << err.what() << endl;
-            is_valid_input = false;
+
+        *top++ = symbol;
+    }
+
+    char pop() {
+        if (top == data) {
+            throw std::runtime_error("Stack underflow");
         }
-    } while (!is_valid_input);
-}
+
+        return *--top;
+    }
+
+    int size() const {
+        return top - data;
+    }
+
+    bool empty() const {
+        return top == data;
+    }
+
+    bool full() const {
+        return top == data + capacity;
+    }
+
+    void clear() {
+        top = data;
+    }
+
+    char peek() {
+        if (top == data) {
+            throw std::runtime_error("Stack underflow");
+        }
+
+        return *top;
+    }
+
+private:
+    int capacity;
+    char* data;
+    char* top;
+};
 
